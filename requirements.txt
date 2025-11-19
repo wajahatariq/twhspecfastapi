@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+gspread
+pandas
+python-dotenv
+python-jose[cryptography]
+pytz

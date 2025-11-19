@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Agent Portal — Techware Hub</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="app-root">
+      <header class="app-header">
+        <div class="app-title">Agent Portal — Techware Hub</div>
+        <div class="app-header-right">
+          <span id="agent-api-url" class="api-url"></span>
+          <span class="user-label">
+            Agent: <span id="agent-current-agent-name">Not selected</span>
+          </span>
+          <div class="night-badge">
+            <div class="night-badge-label">Night Charged</div>
+            <div class="night-badge-amount" id="night-badge-amount">$0.00</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <div class="agent-page">
+          <!-- Tabs -->
+          <div class="tabs tabs-agent">
+            <button id="tab-agent-new" class="tab tab-active" type="button">
+              New Transaction
+            </button>
+            <button id="tab-agent-edit" class="tab" type="button">
+              Edit Transaction
+            </button>
+            <button id="tab-agent-recent" class="tab" type="button">
+              Recent (20 minutes)
+            </button>
+          </div>
+
+          <div class="dashboard">
+            <!-- NEW TRANSACTION -->
+            <section id="agent-new-section" class="card card-wide">
+              <h3 style="margin-top: 0; margin-bottom: 10px;">
+                Submit New Transaction (Spectrum)
+              </h3>
+
+              <form id="agent-form" class="auth-form">
+                <div class="form-two-col">
+                  <div class="form-col">
+                    <label class="form-label">
+                      Agent Name
+                      <select id="agent-name" class="input">
+                        <option value="">Select Agent</option>
+                        <option value="Arham Kaleem">Arham Kaleem</option>
+                        <option value="Arham Ali">Arham Ali</option>
+                        <option value="Haziq">Haziq</option>
+                      </select>
+                    </label>
+
+                    <label class="form-label">
+                      Client Name
+                      <input id="client-name" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Phone Number
+                      <input id="client-phone" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Address
+                      <input id="client-address" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Email
+                      <input id="client-email" class="input" type="email" />
+                    </label>
+                  </div>
+
+                  <div class="form-col">
+                    <label class="form-label">
+                      Card Holder Name
+                      <input id="card-holder" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Card Number
+                      <input id="card-number" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Expiry Date (MMYY)
+                      <input id="card-expiry" class="input" placeholder="MMYY" />
+                    </label>
+
+                    <label class="form-label">
+                      CVC
+                      <input id="card-cvc" class="input" type="number" />
+                    </label>
+
+                    <label class="form-label">
+                      Charge Amount
+                      <input id="charge-amount" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      LLC
+                      <select id="llc" class="input">
+                        <option value="">Select LLC</option>
+                        <option value="Bite Bazaar LLC">Bite Bazaar LLC</option>
+                        <option value="Apex Prime Solutions">Apex Prime Solutions</option>
+                      </select>
+                    </label>
+
+                    <label class="form-label" id="provider-label">
+                      Provider
+                      <select id="provider" class="input">
+                        <option value="">Select Provider</option>
+                        <option value="Spectrum">Spectrum</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Xfinity">Xfinity</option>
+                        <option value="Frontier">Frontier</option>
+                        <option value="Optimum">Optimum</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+
+                <div id="agent-error" class="alert alert-error hidden"></div>
+                <div id="agent-success" class="info-text hidden"></div>
+
+                <button class="btn btn-primary" type="submit">
+                  Submit Transaction
+                </button>
+              </form>
+            </section>
+
+            <!-- EDIT TRANSACTION (Spectrum only) -->
+            <section id="agent-edit-section" class="card card-wide hidden">
+              <h3 style="margin-top: 0; margin-bottom: 10px;">
+                Edit Existing Transaction (Spectrum)
+              </h3>
+
+              <form id="agent-search-form" class="auth-form">
+                <div class="form-row">
+                  <label class="form-label">
+                    Record ID
+                    <input
+                      id="edit-record-id"
+                      class="input"
+                      placeholder="Enter Record ID"
+                    />
+                  </label>
+
+                  <button
+                    id="btn-load-transaction"
+                    class="btn btn-primary"
+                    type="submit"
+                  >
+                    Load Transaction
+                  </button>
+                </div>
+              </form>
+
+              <form
+                id="agent-edit-form"
+                class="auth-form hidden"
+                style="margin-top: 16px;"
+              >
+                <div class="info-text">
+                  Only basic client and transaction fields can be edited. Card
+                  details and status are managed by the manager portal.
+                </div>
+
+                <div class="form-two-col">
+                  <div class="form-col">
+                    <label class="form-label">
+                      Agent Name
+                      <input
+                        id="edit-agent-name"
+                        class="input"
+                        disabled
+                      />
+                    </label>
+
+                    <label class="form-label">
+                      Client Name
+                      <input id="edit-client-name" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Phone Number
+                      <input id="edit-client-phone" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Address
+                      <input id="edit-client-address" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      Email
+                      <input id="edit-client-email" class="input" type="email" />
+                    </label>
+                  </div>
+
+                  <div class="form-col">
+                    <label class="form-label">
+                      Charge Amount
+                      <input id="edit-charge-amount" class="input" />
+                    </label>
+
+                    <label class="form-label">
+                      LLC
+                      <input id="edit-llc" class="input" />
+                    </label>
+
+                    <label
+                      class="form-label"
+                      id="edit-provider-label"
+                    >
+                      Provider
+                      <input id="edit-provider" class="input" />
+                    </label>
+                  </div>
+                </div>
+
+                <div id="agent-edit-error" class="alert alert-error hidden"></div>
+                <div id="agent-edit-success" class="info-text hidden"></div>
+
+                <button class="btn btn-primary" type="submit">
+                  Save Changes
+                </button>
+              </form>
+            </section>
+
+            <!-- RECENT TRANSACTIONS (Spectrum only) -->
+            <section id="agent-recent-section" class="card card-wide hidden">
+              <h3 style="margin-top: 0; margin-bottom: 10px;">
+                Recent Transactions (Last 20 Minutes, Spectrum)
+              </h3>
+
+              <div class="recent-filters">
+                <label class="form-label" style="max-width:220px;">
+                  Agent
+                  <select id="recent-agent" class="input">
+                    <option value="">All Agents</option>
+                  </select>
+                </label>
+              </div>
+
+              <div id="agent-recent-error" class="alert alert-error hidden"></div>
+              <div id="agent-recent-info" class="info-text hidden"></div>
+
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Record ID</th>
+                      <th>Agent</th>
+                      <th>Client</th>
+                      <th>Charge</th>
+                      <th>Status</th>
+                      <th>Timestamp</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-table-body">
+                    <!-- Injected by JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="agent-recent-empty" class="recent-empty hidden">
+                No recent transactions in the last 20 minutes.
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/static/agent.js"></script>
+  </body>
+</html>

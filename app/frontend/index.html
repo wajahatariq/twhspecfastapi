@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Client Management System — Techware Hub</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="app-root">
+      <header class="app-header">
+        <div class="app-title">
+          Client Management System — Techware Hub
+        </div>
+        <div class="app-header-right">
+          <span id="api-url" class="api-url"></span>
+
+          <!-- Night charged selector + badge -->
+          <div class="night-badge-wrapper">
+            <label class="night-select-label">
+              <select id="night-sheet-select" class="input input-compact">
+                <option value="">Both</option>
+                <option value="spectrum">Spectrum</option>
+                <option value="insurance">Insurance</option>
+              </select>
+            </label>
+            <div class="night-badge">
+              <div class="night-badge-label">Night Charged</div>
+              <div class="night-badge-amount" id="night-badge-amount">
+                $0.00
+              </div>
+            </div>
+          </div>
+
+          <span id="user-label" class="user-label"></span>
+          <button id="logout-btn" class="btn btn-outline hidden" type="button">
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <!-- Auth card (visible by default; JS will hide when logged in) -->
+        <section id="auth-section" class="card auth-card">
+          <div class="tabs">
+            <button
+              id="tab-login"
+              class="tab tab-active"
+              type="button"
+            >
+              Sign In
+            </button>
+            <button
+              id="tab-signup"
+              class="tab"
+              type="button"
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <form id="login-form" class="auth-form">
+            <label class="form-label">
+              User ID
+              <input id="login-user" class="input" />
+            </label>
+            <label class="form-label">
+              Password
+              <input
+                id="login-pass"
+                class="input"
+                type="password"
+              />
+            </label>
+            <div id="login-error" class="alert alert-error hidden"></div>
+            <button class="btn btn-primary" type="submit">
+              Sign In
+            </button>
+          </form>
+
+          <form id="signup-form" class="auth-form hidden">
+            <label class="form-label">
+              New User ID
+              <input id="signup-user" class="input" />
+            </label>
+            <label class="form-label">
+              Password
+              <input
+                id="signup-pass"
+                class="input"
+                type="password"
+              />
+            </label>
+            <label class="form-label">
+              Confirm Password
+              <input
+                id="signup-pass2"
+                class="input"
+                type="password"
+              />
+            </label>
+            <div id="signup-error" class="alert alert-error hidden"></div>
+            <button class="btn btn-primary" type="submit">
+              Sign Up
+            </button>
+          </form>
+        </section>
+
+        <!-- Dashboard -->
+        <section id="dashboard-section" class="dashboard hidden">
+          <div class="tabs">
+            <button
+              id="tab-spectrum"
+              class="tab tab-active"
+              type="button"
+            >
+              Spectrum Pending
+            </button>
+            <button
+              id="tab-insurance"
+              class="tab"
+              type="button"
+            >
+              Insurance Pending
+            </button>
+            <button
+              id="tab-analytics"
+              class="tab"
+              type="button"
+            >
+              Analytics / Full Data
+            </button>
+          </div>
+
+          <div id="dashboard-error" class="alert alert-error hidden"></div>
+          <div id="dashboard-info" class="info-text hidden"></div>
+
+          <!-- Pending leads (cards) -->
+          <div id="leads-container" class="lead-list">
+            <!-- Cards injected by JS -->
+          </div>
+
+          <!-- Analytics view (hidden by default; only for Analytics tab) -->
+          <section id="analytics-section" class="analytics-section hidden">
+            <div class="card analytics-filters-card">
+              <h3 style="margin-top: 0; margin-bottom: 10px;">
+                Analytics and Full Data
+              </h3>
+              <div class="analytics-row">
+                <label class="form-label">
+                  Sheet
+                  <select id="analytics-sheet" class="input">
+                    <option value="spectrum">Spectrum (Sheet1)</option>
+                    <option value="insurance">Insurance (Sheet2)</option>
+                    <option value="both">Both Sheets</option>
+                  </select>
+                </label>
+
+                <label class="form-label">
+                  Agent
+                  <select id="analytics-agent" class="input">
+                    <option value="">All Agents</option>
+                  </select>
+                </label>
+
+                <label class="form-label">
+                  Status
+                  <select id="analytics-status" class="input">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Charged">Charged</option>
+                    <option value="Declined">Declined</option>
+                    <option value="Charge Back">Charge Back</option>
+                  </select>
+                </label>
+
+                <label class="form-label">
+                  Chart Type
+                  <select id="analytics-chart-type" class="input">
+                    <option value="bar">Bar</option>
+                    <option value="line">Line</option>
+                    <option value="stacked">Stacked Bar</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="analytics-row">
+                <label class="form-label">
+                  From
+                  <div class="analytics-datetime">
+                    <input
+                      id="analytics-from-date"
+                      type="date"
+                      class="input"
+                    />
+                    <input
+                      id="analytics-from-time"
+                      type="time"
+                      class="input"
+                    />
+                  </div>
+                </label>
+
+                <label class="form-label">
+                  To
+                  <div class="analytics-datetime">
+                    <input
+                      id="analytics-to-date"
+                      type="date"
+                      class="input"
+                    />
+                    <input
+                      id="analytics-to-time"
+                      type="time"
+                      class="input"
+                    />
+                  </div>
+                </label>
+
+                <button
+                  id="analytics-refresh"
+                  class="btn btn-primary analytics-refresh-button"
+                  type="button"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- Metrics row -->
+            <div class="analytics-metrics-row">
+              <div class="card analytics-metric-card">
+                <div class="metric-label">Total Charge</div>
+                <div class="metric-value" id="metric-total-charge">
+                  $0.00
+                </div>
+              </div>
+              <div class="card analytics-metric-card">
+                <div class="metric-label">Total Transactions</div>
+                <div class="metric-value" id="metric-total-transactions">
+                  0
+                </div>
+              </div>
+              <div class="card analytics-metric-card">
+                <div class="metric-label">Average Charge per Hour</div>
+                <div class="metric-value" id="metric-avg-per-hour">
+                  $0.00
+                </div>
+              </div>
+              <div class="card analytics-metric-card">
+                <div class="metric-label">Peak Charge Timestamp</div>
+                <div class="metric-value" id="metric-peak-timestamp">
+                  N/A
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="card">
+              <canvas id="analytics-chart" height="120"></canvas>
+            </div>
+
+            <!-- Full table -->
+            <div class="card">
+              <div class="analytics-table-header">
+                <h3 style="margin-top: 0; margin-bottom: 0;">
+                  Full Data Table
+                </h3>
+                <div class="analytics-table-actions">
+                  <input
+                    id="analytics-search"
+                    class="input"
+                    placeholder="Search table..."
+                  />
+                  <button
+                    id="analytics-download"
+                    class="btn btn-outline btn-small"
+                    type="button"
+                  >
+                    Download CSV
+                  </button>
+                </div>
+              </div>
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead id="analytics-table-head"></thead>
+                  <tbody id="analytics-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Duplicates -->
+            <div class="card">
+              <h3 style="margin-top: 0; margin-bottom: 10px;">
+                Duplicate Record_IDs
+              </h3>
+              <div
+                id="analytics-duplicates-empty"
+                class="info-text"
+              >
+                No duplicate Record_ID values found.
+              </div>
+              <div
+                class="table-wrapper hidden"
+                id="analytics-duplicates-wrapper"
+              >
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Record_ID</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody id="analytics-duplicates-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <!-- Sound for new leads -->
+    <audio id="new-lead-sound" src="/static/new_lead.mp3" preload="auto"></audio>
+
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
