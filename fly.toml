@@ -1,0 +1,14 @@
+app = "twhspec"  # <-- replace with your actual Fly app name
+
+primary_region = "ams"  # or the region you chose (e.g., bom, fra, sin)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_start_machines = true
+  auto_stop_machines = false
+  min_machines_running = 1
+  processes = ["app"]
