@@ -5,3 +5,4 @@ pandas
 python-dotenv
 python-jose[cryptography]
 pytz
+email-validator
