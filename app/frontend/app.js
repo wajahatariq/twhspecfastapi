@@ -1,3 +1,4 @@
+// 2
 const API_BASE = "https://twhspecfastapi.azurewebsites.net";
 const WS_URL = "wss://twhspecfastapi.azurewebsites.net/ws/manager";
  // use wss:// in production
@@ -1190,6 +1191,7 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
 
 
 
