@@ -1,5 +1,6 @@
-const API_BASE = "https://twhspecfastapi.azurewebsites.net";
-const WS_URL = "wss://twhspecfastapi.azurewebsites.net/ws/manager";
+const API_BASE_URL = "https://twhspecfastapi.azurewebsites.net";
+const WS_URL       = "wss://twhspecfastapi.azurewebsites.net/ws/manager";
+
 
 function $(id) {
   return document.getElementById(id);
@@ -664,6 +665,7 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
 
 
 
