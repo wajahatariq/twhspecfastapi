@@ -1,6 +1,6 @@
 app = "twhspec"  # <-- replace with your actual Fly app name
 
-primary_region = "ams"  # or the region you chose (e.g., bom, fra, sin)
+primary_region = "sin"  # or the region you chose (e.g., bom, fra, sin)
 
 [build]
   dockerfile = "Dockerfile"
