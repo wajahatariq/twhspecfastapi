@@ -72,7 +72,17 @@ def get_gc() -> gspread.Client:
                 f"Invalid GOOGLE_SERVICE_ACCOUNT_JSON content: {e}"
             ) from e
 
-        _gc = gspread.service_account_from_dict(info)
+        # Prefer dict-based credentials if available
+        if hasattr(gspread, "service_account_from_dict"):
+            _gc = gspread.service_account_from_dict(info)
+        else:
+            # Fallback for older gspread: write JSON to a temp file
+            import tempfile
+
+            with tempfile.NamedTemporaryFile("w+", delete=False) as tmp:
+                json.dump(info, tmp)
+                tmp_path = tmp.name
+            _gc = gspread.service_account(filename=tmp_path)
     else:
         # Fallback to file path for local/dev
         _gc = gspread.service_account(filename=SERVICE_ACCOUNT_FILE)
@@ -514,4 +524,5 @@ def get_night_charged_total(sheet: Optional[str] = None) -> float:
         total += df.loc[mask, "ChargeFloat"].sum()
 
     return float(total)
+
 
