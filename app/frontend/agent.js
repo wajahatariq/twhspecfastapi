@@ -1,5 +1,5 @@
-const API_BASE_URL = "https://twhspec.onrender.com";
-const WS_URL = "wss://twhspec.onrender.com/ws/manager";
+const API_BASE_URL = "https://twhspec-dk49.onrender.com";
+const WS_URL = "wss://twhspec-dk49.onrender.com/ws/manager";
 
 function $(id) {
   return document.getElementById(id);
@@ -664,4 +664,5 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
 
