@@ -1,9 +1,11 @@
+import os
+import json
+
 import gspread
 import pandas as pd
 from datetime import datetime, timedelta, time
 import pytz
-from typing import Optional  # add this
-
+from typing import Optional
 
 from app.config import SHEET_NAME, SERVICE_ACCOUNT_FILE, TIMEZONE
 
@@ -13,6 +15,9 @@ _gc = None
 _spectrum_ws = None
 _insurance_ws = None
 _users_ws = None
+
+# New: read JSON content if provided
+SERVICE_ACCOUNT_JSON = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
 
 def normalize_card_number(card: str) -> str:
     """
@@ -47,9 +52,31 @@ def normalize_expiry(expiry: str) -> str:
     return digits
 
 def get_gc() -> gspread.Client:
+    """
+    Return a cached gspread Client.
+
+    Priority:
+    1. If GOOGLE_SERVICE_ACCOUNT_JSON is set -> use that (JSON content).
+    2. Else fall back to SERVICE_ACCOUNT_FILE (path-based).
+    """
     global _gc
-    if _gc is None:
+    if _gc is not None:
+        return _gc
+
+    if SERVICE_ACCOUNT_JSON:
+        # JSON content stored directly in env var
+        try:
+            info = json.loads(SERVICE_ACCOUNT_JSON)
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"Invalid GOOGLE_SERVICE_ACCOUNT_JSON content: {e}"
+            ) from e
+
+        _gc = gspread.service_account_from_dict(info)
+    else:
+        # Fallback to file path for local/dev
         _gc = gspread.service_account(filename=SERVICE_ACCOUNT_FILE)
+
     return _gc
 
 
@@ -487,3 +514,4 @@ def get_night_charged_total(sheet: Optional[str] = None) -> float:
         total += df.loc[mask, "ChargeFloat"].sum()
 
     return float(total)
+
